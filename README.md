@@ -146,7 +146,7 @@ El desarrollo siguió el flujo obligatorio de Test Driven Development:
 El historial de commits refleja este proceso.
 
 - El commit **generacion de tests** contiene los test fallando
-![alt text](image.png)
+![alt text](image-2.png)
 
 
 - Prueba de test pasando:
