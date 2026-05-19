@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
+import '@testing-library/jest-dom'
+import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import PasswordStrengthMeter from './PasswordStrengthMeter'
@@ -32,14 +33,14 @@ describe('PasswordStrengthMeter', () => {
   it('renders "fuerte" when password has numbers', async () => {
     render(<PasswordStrengthMeter />)
     const input = screen.getByLabelText(/password/i)
-    await userEvent.type(input, "contraseña1")
+    await userEvent.type(input, "contrasena1")
     expect(screen.getByText("fuerte")).toBeInTheDocument()
   })
 
   it('renders "muy fuerte" when password has symbols and numbers', async () => {
     render(<PasswordStrengthMeter />)
     const input = screen.getByLabelText(/password/i)
-    await userEvent.type(input, "contraseña1!!")
+    await userEvent.type(input, "contrasena1!!")
     expect(screen.getByText("muy fuerte")).toBeInTheDocument()
   })
 
@@ -64,12 +65,20 @@ describe('PasswordStrengthMeter', () => {
     expect(screen.getByText("débil")).toBeInTheDocument()
   })
 
-  it('render "vacio" when input is cleared', async () => {
-  render(<PasswordStrengthMeter />)
-  const input = screen.getByLabelText(/password/i)
-  await userEvent.type(input, 'contraseña1')
-  await userEvent.clear(input)
-  expect(screen.getByText(/vacía/i)).toBeInTheDocument()
-})
+  it('shows progress bar with correct value for "fuerte"', async () => {
+    render(<PasswordStrengthMeter />)
+    const input = screen.getByLabelText(/password/i)
+    await userEvent.type(input, 'contrasena1')
+    const bar = screen.getByRole('progressbar')
+    expect(bar.value).toBe(75)
+  })
+
+  it('renders "vacía" when input is cleared', async () => {
+    render(<PasswordStrengthMeter />)
+    const input = screen.getByLabelText(/password/i)
+    await userEvent.type(input, 'contrasena1')
+    await userEvent.clear(input)
+    expect(screen.getByText(/vacía/i)).toBeInTheDocument()
+  })
 
 })

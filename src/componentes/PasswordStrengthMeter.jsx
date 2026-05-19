@@ -1,13 +1,6 @@
-import { use } from 'react';
-import styles from './PasswordStrengthMeter.css';
-
-function calculateStrength(password) {
-    if (password === "") return "vacía";
-    if (password.length < 8) return "débil";
-    if (password.length >= 8 && /\d/ .test(password) === false) return "media";
-    if (password.length >= 8 && /\d/ .test(password) === true && /[^a-zA-Z0-9]/.test(password) === false ) return "fuerte";
-    if (password.length >= 8 && /\d/ .test(password) === true && /[^a-zA-Z0-9]/.test(password) === true ) return "muy fuerte";
-}
+import { useState } from 'react';
+import './PasswordStrengthMeter.css';
+import { calculateStrength } from './calculateStrength';
 
 
 function PasswordStrengthMeter() {
@@ -22,7 +15,7 @@ function PasswordStrengthMeter() {
 
     return (
         <div className="password-strength-meter">
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">Password</label>
             <input
             id="password"
             type="password"
@@ -36,6 +29,13 @@ function PasswordStrengthMeter() {
                 : 'vacia'}>
                     {strength}
             </p>
+            <progress value={strength === 'vacía' ? null
+                : strength === 'débil' ? 25
+                : strength === 'media' ? 50
+                : strength === 'fuerte' ? 75
+                : strength === 'muy fuerte' ? 100
+                : 0} max="100">
+            </progress>
         </div>
     )
 }
